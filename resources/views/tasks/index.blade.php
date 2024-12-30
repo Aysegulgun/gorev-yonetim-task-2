@@ -1,42 +1,58 @@
 @extends('layouts.app')
 
-@section('title', 'Görevler')
-
 @section('content')
+<div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Görevler</h1>
         <a href="{{ route('tasks.create') }}" class="btn btn-primary">Yeni Görev</a>
     </div>
 
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table">
             <thead>
                 <tr>
-                    <th>Başlık</th>
-                    <th>Açıklama</th>
-                    <th>Durum</th>
-                    <th>Atanan Kişi</th>
-                    <th>İşlemler</th>
+                    <th class="fw-bold text-dark">Başlık</th>
+                    <th class="fw-bold text-dark">Açıklama</th>
+                    <th class="fw-bold text-dark">Durum</th>
+                    <th class="fw-bold text-dark">Atanan Kişi</th>
+                    <th class="fw-bold text-dark">İşlemler</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($tasks as $task)
+                @forelse($tasks as $task)
                     <tr>
                         <td>{{ $task->title }}</td>
                         <td>{{ $task->description }}</td>
                         <td>{{ $task->status }}</td>
-                        <td>{{ $task->user->name }}</td>
+                        <td>{{ $task->user->name ?? 'Atanmamış' }}</td>
                         <td>
-                            <a href="{{ route('tasks.edit', $task) }}" class="btn btn-sm btn-warning">Düzenle</a>
+                            <a href="{{ route('tasks.edit', $task) }}" class="btn btn-success btn-sm">Düzenle</a>
                             <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Emin misiniz?')">Sil</button>
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Emin misiniz?')">Sil</button>
                             </form>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center">Henüz görev bulunmuyor.</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
+</div>
 @endsection 

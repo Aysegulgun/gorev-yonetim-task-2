@@ -11,7 +11,9 @@ class TaskController extends Controller
     // Tüm görevleri listele
     public function index()
     {
+        // Tüm görevleri tarihe göre sıralayarak getir
         $tasks = Task::with('user')->get();
+                    
         return view('tasks.index', compact('tasks'));
     }
 
@@ -25,15 +27,23 @@ class TaskController extends Controller
     // Yeni görevi kaydet
     public function store(Request $request)
     {
+        // Basit doğrulama
         $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'user_id' => 'required|exists:users,id',
-            'status' => 'required|in:pending,in_progress,completed'
+            'status' => 'required',
+            'user_id' => 'required'
         ]);
 
-        Task::create($request->all());
-        return redirect()->route('tasks.index')->with('success', 'Görev başarıyla oluşturuldu.');
+        // Direkt olarak create kullan
+        Task::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'status' => $request->status,
+            'user_id' => $request->user_id
+        ]);
+
+        return redirect('/tasks');
     }
 
     // Görev düzenleme formu

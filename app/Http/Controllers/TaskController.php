@@ -27,23 +27,19 @@ class TaskController extends Controller
     // Yeni görevi kaydet
     public function store(Request $request)
     {
-        // Basit doğrulama
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required',
             'description' => 'required',
             'status' => 'required',
             'user_id' => 'required'
         ]);
 
-        // Direkt olarak create kullan
-        Task::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'status' => $request->status,
-            'user_id' => $request->user_id
-        ]);
-
-        return redirect('/tasks');
+        try {
+            Task::create($validated);
+            return redirect('/')->with('success', 'Görev başarıyla oluşturuldu.');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Görev oluşturulurken bir hata oluştu.');
+        }
     }
 
     // Görev düzenleme formu

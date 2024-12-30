@@ -52,15 +52,19 @@ class TaskController extends Controller
     // Görevi güncelle
     public function update(Request $request, Task $task)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'user_id' => 'required|exists:users,id',
-            'status' => 'required|in:pending,in_progress,completed'
+            'status' => 'required',
+            'user_id' => 'required'
         ]);
 
-        $task->update($request->all());
-        return redirect()->route('tasks.index')->with('success', 'Görev başarıyla güncellendi.');
+        try {
+            $task->update($validated);
+            return redirect('/')->with('success', 'Görev başarıyla güncellendi.');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Görev güncellenirken bir hata oluştu.');
+        }
     }
 
     // Görevi sil

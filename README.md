@@ -10,6 +10,24 @@ Bu proje, Laravel ve Inertia.js kullanılarak geliştirilmiş bir görev yöneti
 -   Modern ve duyarlı arayüz tasarımı
 -   Flash mesajları ile işlem bildirimleri
 
+## Ekran Görüntüleri
+
+### Giriş Ekranı
+
+![Giriş Ekranı](screenshots/girişekranı.png)
+
+### Görev Oluşturma
+
+![Görev Oluşturma](screenshots/görevoluştur.png)
+
+### Kullanıcı Yönetimi
+
+![Kullanıcılar](screenshots/kullanıcılar.png)
+
+### Kullanıcı Oluşturma
+
+![Kullanıcı Oluşturma](screenshots/kullanıcıoluştur.png)
+
 ## Gereksinimler
 
 -   PHP >= 8.1
